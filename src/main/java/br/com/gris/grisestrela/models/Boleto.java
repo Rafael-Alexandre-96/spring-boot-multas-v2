@@ -1,5 +1,6 @@
 package br.com.gris.grisestrela.models;
 
+import br.com.gris.grisestrela.models.interfaces.Entited;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Boleto {
+public class Boleto implements Entited {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

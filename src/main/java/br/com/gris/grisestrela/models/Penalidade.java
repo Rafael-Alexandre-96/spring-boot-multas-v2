@@ -3,6 +3,8 @@ package br.com.gris.grisestrela.models;
 import java.time.OffsetDateTime;
 
 import br.com.gris.grisestrela.models.enumerations.TipoPenalidade;
+import br.com.gris.grisestrela.models.interfaces.Entited;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +28,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Penalidade {
+public class Penalidade implements Entited {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,7 @@ public class Penalidade {
   private TipoPenalidade tipo = TipoPenalidade.NORMAL;
 
   @NotNull
-  @OneToOne
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JoinColumn(name = "id_cobranca", referencedColumnName = "id")
   private Cobranca cobranca;
 

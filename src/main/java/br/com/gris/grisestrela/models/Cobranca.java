@@ -2,6 +2,8 @@ package br.com.gris.grisestrela.models;
 
 import java.time.OffsetDateTime;
 
+import br.com.gris.grisestrela.models.interfaces.Entited;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Cobranca {
+public class Cobranca implements Entited {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +42,7 @@ public class Cobranca {
 
   private OffsetDateTime dataPagamento;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
   @JoinColumn(name = "id_boleto", referencedColumnName = "id")
   private Boleto boleto;
 

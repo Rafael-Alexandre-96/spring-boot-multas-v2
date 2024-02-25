@@ -3,6 +3,7 @@ package br.com.gris.grisestrela.models;
 import br.com.gris.grisestrela.exceptions.InvalidFormatException;
 import br.com.gris.grisestrela.models.embeddeds.RegistroStatus;
 import br.com.gris.grisestrela.models.interfaces.ControlledRegistration;
+import br.com.gris.grisestrela.models.interfaces.Entited;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Veiculo implements ControlledRegistration {
+public class Veiculo implements Entited, ControlledRegistration {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

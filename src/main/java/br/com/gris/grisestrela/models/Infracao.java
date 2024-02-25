@@ -4,9 +4,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.gris.grisestrela.exceptions.RelationalViolationException;
 import br.com.gris.grisestrela.models.embeddeds.RegistroStatus;
 import br.com.gris.grisestrela.models.enumerations.SituacaoInfracao;
 import br.com.gris.grisestrela.models.interfaces.ControlledRegistration;
+import br.com.gris.grisestrela.models.interfaces.Entited;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +22,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -35,7 +40,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Infracao implements ControlledRegistration {
+public class Infracao implements Entited, ControlledRegistration {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,8 +71,8 @@ public class Infracao implements ControlledRegistration {
   private Veiculo veiculo;
 
   @ManyToOne
-  @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
-  private Pessoa pessoa;
+  @JoinColumn(name = "id_condutor", referencedColumnName = "id")
+  private Pessoa condutor;
 
   @NotNull
   private Boolean assinado = false;
@@ -78,11 +83,11 @@ public class Infracao implements ControlledRegistration {
   private OffsetDateTime prazoIndicacao;
 
   @Size(min = 0, max = 2)
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   @JoinTable(
     name = "infracao_penalidade", 
     joinColumns = @JoinColumn(name = "id_infracao"), 
-    inverseJoinColumns = @JoinColumn(name = "id_penalidade")
+    inverseJoinColumns = @JoinColumn(name = "id_penalidade", unique = true)
   )
   List<Penalidade> penalidades = new ArrayList<>();
 
@@ -91,5 +96,12 @@ public class Infracao implements ControlledRegistration {
 
   @Lob
   private String observacao;
+
+  @PrePersist
+  @PreUpdate
+  private void validateEntity() {
+    if (penalidades.size() == 2 && penalidades.get(0).getTipo() == penalidades.get(1).getTipo())
+      throw new RelationalViolationException("Os tipos de penalidades não podem ser iguais.");
+  }
   
 }

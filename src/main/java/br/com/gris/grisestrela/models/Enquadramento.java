@@ -1,6 +1,7 @@
 package br.com.gris.grisestrela.models;
 
 import br.com.gris.grisestrela.models.enumerations.Infrator;
+import br.com.gris.grisestrela.models.interfaces.Entited;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,7 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Enquadramento {
+public class Enquadramento implements Entited {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
