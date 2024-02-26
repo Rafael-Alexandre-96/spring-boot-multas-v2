@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 
 import br.com.gris.grisestrela.exceptions.IdNotFoundException;
+import br.com.gris.grisestrela.models.interfaces.ControlledRegistration;
 import br.com.gris.grisestrela.models.interfaces.Entited;
+import jakarta.transaction.Transactional;
 
 public class SimpleCRUDService<Entity> {
   
@@ -28,16 +30,21 @@ public class SimpleCRUDService<Entity> {
     return this.repository.findAll();
   }
 
+  @Transactional
   public Entity create(@NonNull Entity entity) {
     return this.repository.save(entity);
   }
 
+  @Transactional
   public Entity update(@NonNull Long id, @NonNull Entity entity) {
     Entity finded = this.findById(id);
     ((Entited) entity).setId(((Entited) finded).getId());
+    if (entity instanceof ControlledRegistration)
+      ((ControlledRegistration) entity).setRegistroStatus(((ControlledRegistration) finded).getRegistroStatus());
     return this.repository.save(entity);
   } 
 
+  @Transactional
   public void deleteById(@NonNull Long id) {
     Entity entity = this.findById(id);
     this.repository.delete(entity);
