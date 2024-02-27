@@ -8,11 +8,11 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.gris</groupId>
-	<artifactId>gris-estrela</artifactId>
+	<groupId>br.com.gestor</groupId>
+	<artifactId>multas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gris-estrela</name>
-	<description>Demo project for Spring Boot</description>
+	<name>multas</name>
+	<description>API Rest para gestao de multas de transito</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
