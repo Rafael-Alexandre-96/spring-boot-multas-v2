@@ -99,7 +99,7 @@ public class Infracao implements Entited, ControlledRegistration {
 
   @PrePersist
   @PreUpdate
-  private void validateEntity() {
+  private void validateFields() {
     if (penalidades.size() == 2 && penalidades.get(0).getTipo() == penalidades.get(1).getTipo())
       throw new RelationalViolationException("Os tipos de penalidades não podem ser iguais.");
   }

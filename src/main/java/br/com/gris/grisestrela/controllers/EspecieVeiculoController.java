@@ -29,7 +29,7 @@ public class EspecieVeiculoController {
   private static final String DEFAULT_SORT = "descricao";
 
   @GetMapping("/{id}")
-  public ResponseEntity<EspecieVeiculo> findById(@PathVariable  @NonNull Long id) {
+  public ResponseEntity<EspecieVeiculo> findById(@PathVariable @NonNull Long id) {
     return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
   }
 

@@ -11,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -49,12 +51,11 @@ public class Pessoa implements Entited, ControlledRegistration {
   @Lob
   private String observacao;
 
-  public void setCpf(String cpf) {
-    if (cpf == null || !cpf.matches("[0-9]{11}")) {
+  @PrePersist
+  @PreUpdate
+  private void validateFields() {
+    if (this.cpf == null || !this.cpf.matches("[0-9]{11}"))
       throw new InvalidFormatException("cpf");
-    } else {
-      this.cpf = cpf;
-    }
   }
   
 }

@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -55,12 +57,11 @@ public class Veiculo implements Entited, ControlledRegistration {
   @Lob
   private String observacao;
   
-  public void setPlaca(String placa) {
-    if (placa == null || !placa.matches("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}[0-9]{4}")) {
+  @PrePersist
+  @PreUpdate
+  private void validateFields() {
+    if (this.placa == null || !this.placa.matches("[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}|[A-Z]{3}[0-9]{4}"))
       throw new InvalidFormatException("placa");
-    } else {
-      this.placa = placa;
-    }
   }
 
 }

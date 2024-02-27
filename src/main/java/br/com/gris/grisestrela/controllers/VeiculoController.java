@@ -18,8 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gris.grisestrela.models.Veiculo;
 import br.com.gris.grisestrela.services.VeiculoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
+@Tag(name = "Veiculo", description = "Endpoints para veiculo")
 @RestController
 @RequestMapping("/api/v1/Veiculo")
 public class VeiculoController {
@@ -28,8 +35,14 @@ public class VeiculoController {
   private VeiculoService service;
   private static final String DEFAULT_SORT = "placa";
 
+  @Operation(summary = "Retorna um veiculo pelo ID")
+  @ApiResponses(value = { 
+  @ApiResponse(responseCode = "200", description = "Veiculo encontrado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Veiculo.class)) }),
+  @ApiResponse(responseCode = "404", description = "Veiculo não existe", content = @Content) })
   @GetMapping("/{id}")
-  public ResponseEntity<Veiculo> findById(@PathVariable  @NonNull Long id) {
+  public ResponseEntity<Veiculo> findById(
+    @Parameter(description = "ID do veiculo a ser procurado") @PathVariable @NonNull Long id
+  ) {
     return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
   }
 
